@@ -3,12 +3,9 @@ const ExpressError = require('./expressError')
 
 const app = express();
 
-
-
 function handleNums(str) {
     const numArr = str.split(',').map(item => {
         let num = Number(item);
-        console.log(num)
         if (isNaN(num)) {
             throw new ExpressError(`${item} is not a number.`);
         }
@@ -90,15 +87,17 @@ app.use((req, res, next) => {
   })
   
   
-  app.use(function (err, req, res, next) {
-    let status = err.status || 500;
-    let message = err.msg;
-  
-    return res.status(status).json({
-      error: { message, status }
-    });
+app.use(function (err, req, res, next) {
+  let status = err.status || 500;
+  let message = err.msg;
+
+  return res.status(status).json({
+    error: { message, status }
   });
+});
   
-  app.listen(3000, () => {
-    console.log("Server running on port 3000")
-  });
+app.listen(3000, () => {
+console.log("Server running on port 3000")
+});
+
+module.exports = handleNums;
